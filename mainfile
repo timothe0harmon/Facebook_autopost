@@ -1,0 +1,59 @@
+import random
+from selenium import webdriver
+import time
+from facebok_text import post_text
+from creds import username,password
+from selenium.webdriver.chrome.options import Options
+
+
+#Input Your Facebook URL Here (Inbetween The Quotes)
+profile_url=""
+
+
+#input the time inbetween posts in seconds 30mins = 1800 seconds
+time_between_post= 
+
+#inputer the number of posts you would like to make 
+number_of_posts=
+
+
+#Input facebook username and password (Inbetween The Quotes)
+username=""
+password=""
+chrome_driver_path ="chromedriver.exe"
+
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument("--start-maximized")
+chrome_options.add_argument("--disable-notifications")
+
+
+w = webdriver.Chrome(chrome_driver_path,chrome_options=chrome_options)
+
+w.get("http://www.facebook.com")
+time.sleep(3)
+w.find_element_by_xpath("/html/body/div[1]/div[2]/div[1]/div/div/div/div[2]/div/div[1]/form/div[1]/div[1]/input").send_keys(username)
+w.find_element_by_xpath("/html/body/div[1]/div[2]/div[1]/div/div/div/div[2]/div/div[1]/form/div[1]/div[2]/div/input").send_keys(password)
+w.find_element_by_xpath("/html/body/div[1]/div[2]/div[1]/div/div/div/div[2]/div/div[1]/form/div[2]/button").click()
+time.sleep(5)
+w.get(profile_url)
+time.sleep(4)
+w.find_element_by_xpath("/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div[4]/div[2]/div/div[2]/div[1]/div/div/div/div/div[1]/div/div[1]/span").click()
+i=0
+while i < number_of_posts:
+    time.sleep(time_between_post)
+
+    # message input
+    w.find_element_by_xpath(
+        "/html/body/div[1]/div/div[1]/div/div[4]/div/div/div[1]/div/div[2]/div/div/div/form/div/div[1]/div/div/div/div[2]/div[1]/div[1]/div[1]/div/div/div/div/div[2]/div/div/div/div").send_keys(
+        random.choice(post_text))
+    time.sleep(1)
+
+    # message send
+    w.find_element_by_xpath(
+        "/html/body/div[1]/div/div[1]/div/div[4]/div/div/div[1]/div/div[2]/div/div/div/form/div/div[1]/div/div/div/div[3]/div[2]/div/div").click()
+    i+=1
+    time.sleep(5)
+    w.find_element_by_xpath(
+        "/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div[4]/div[2]/div/div[2]/div[1]/div/div/div/div/div[1]/div/div[1]/span").click()
+w.close()
+print("done")
